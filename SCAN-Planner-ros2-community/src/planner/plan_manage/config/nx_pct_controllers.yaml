@@ -1,0 +1,24 @@
+closed_loop_controller:
+  ros__parameters:
+    use_sim_time: false
+    start_paused: true
+    body_pose_topic: /scan/body_odom
+    cmd_vel_topic: /sdk_cmd_vel
+    cancel_topic: /scan_planner/cancel
+    preempt_topic: /scan_planner/preempt
+    pause_topic: /scan_planner/pause
+    goal_status_topic: /scan_planner/local_goal_status
+    time_forward: 1.5
+    lookahead_distance: 0.45
+    goal_slowdown_distance: 0.50
+    heading_error_threshold: 1.2
+    kp_pos: 0.8
+    kp_yaw: 1.5
+    max_vx: 0.60
+    max_vyaw: 0.35
+    finish_dist: 0.08
+    odom_timeout: 0.3
+    max_linear_accel: 0.30
+    max_angular_accel: 1.2
+    control_rate: 50.0
+    forward_only: true

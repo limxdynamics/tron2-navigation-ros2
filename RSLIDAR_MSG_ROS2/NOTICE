@@ -1,0 +1,60 @@
+RoboSense rslidar_msg local metadata notice
+===========================================
+
+This directory combines two separately owned bodies of work. They are recorded
+under separate headings below so that neither of them is attributed to the
+other.
+
+------------------------------------------------------------------------------
+1. The upstream rslidar_msg source
+------------------------------------------------------------------------------
+
+rslidar_msg
+Copyright (c) 2020 RoboSense
+
+This directory is a production subset of:
+
+  rslidar_msg
+  https://github.com/RoboSense-LiDAR/rslidar_msg
+  baseline commit fe8a95cb242bd294cc3d5e3422f2093fb49a56ee
+
+The upstream source is licensed under the BSD 3-Clause license and is retained
+under its own LICENSE file, which carries the upstream copyright notice, the
+license conditions, and the disclaimer. RoboSense is not affiliated with LimX
+Dynamics.
+
+------------------------------------------------------------------------------
+2. The local modification - separate work built on layer 1
+------------------------------------------------------------------------------
+
+Copyright 2026 LimX Dynamics Technology Co., Ltd.
+
+The 2026 correction in this directory is original work of LimX Dynamics and is
+not the work of RoboSense. RoboSense has not reviewed, endorsed, or approved it,
+and the upstream copyright notice does not extend to it.
+
+package.xml and the retained ros1/ros2 package manifest copies now identify the
+included 3-clause BSD terms with the SPDX identifier BSD-3-Clause instead of the
+ambiguous label BSD. The three CMakeLists.txt files are reformatted only: the
+closing parenthesis of the ROS 2 interface-generation block is re-indented, and
+the ROS 1 message-generation calls are wrapped one argument per line. No message
+definition and no runtime source behaviour was changed.
+
+New files added by LimX Dynamics:
+
+  NOTICE
+
+Existing baseline files modified by LimX Dynamics:
+
+  CMakeLists.txt
+  package.xml
+  ros1/CMakeLists.txt
+  ros1/package.xml
+  ros2/CMakeLists.txt
+  ros2/package.xml
+
+Every other file in this directory is retained byte-for-byte from the baseline
+commit recorded above.
+
+Preserve the upstream copyright notice, license conditions, and disclaimer, and
+this modification notice when redistributing this source or binaries.

@@ -1,0 +1,58 @@
+# ROS, CMake, colcon, and package build outputs.
+/build/
+/install/
+/devel/
+/log/
+/Log/
+**/build/
+**/install/
+**/devel/
+**/log/
+**/Log/
+
+# Local Python environments and generated caches.
+/.venv/
+/venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.cache/
+*.py[cod]
+
+# Robot/site configuration must never be committed.
+/config/navigation.env
+
+# Runtime maps, recordings, logs, and generated navigation assets.
+*.pcd
+*.ply
+*.stl
+*.pickle
+*.pkl
+*.npy
+*.bag
+*.db3
+*.mcap
+*.lvx
+*.log
+*.tmp
+*.new
+/recordings/
+
+# External GPL worktrees are deliberately outside this repository.
+/FAST_LIO/
+/FAST_LIO_LOCALIZATION2/
+/PCT_planner-RC2026_Map_Planner/
+/PCT_planner/
+/FAST_LIO
+/FAST_LIO_LOCALIZATION2
+/PCT_planner-RC2026_Map_Planner
+/PCT_planner
+
+# Locally generated delivery archives and editor metadata.
+/public_source_packages/
+/portable_packages/
+/.vscode/
+/.idea/
+.DS_Store
+Thumbs.db
+core
+core.*

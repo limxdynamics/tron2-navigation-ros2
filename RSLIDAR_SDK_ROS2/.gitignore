@@ -1,0 +1,17 @@
+*.cproject
+*.project
+*~
+*.swp
+*.cur_trans
+build
+.vscode
+*.csv
+!src/rs_driver/test/res/angle.csv
+build/*
+cmake-build-debug/
+.idea/
+version.h
+*.pb.cc
+*.pb.h
+__pycache__/
+*.pyc

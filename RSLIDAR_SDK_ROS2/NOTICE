@@ -1,0 +1,76 @@
+RoboSense rslidar_sdk local derivative notice
+==============================================
+
+This directory combines two separately owned bodies of work. They are recorded
+under separate headings below so that neither of them is attributed to the
+other.
+
+------------------------------------------------------------------------------
+1. The upstream rslidar_sdk source
+------------------------------------------------------------------------------
+
+rslidar_sdk
+Copyright (c) 2020 RoboSense
+
+This directory is a production subset of:
+
+  rslidar_sdk
+  https://github.com/RoboSense-LiDAR/rslidar_sdk
+  baseline commit 8b4b4b7ff910799260347821084c59e1c73d50d5
+
+The upstream source is licensed under the BSD 3-Clause license and is retained
+under its own LICENSE file, which carries the upstream copyright notice, the
+license conditions, and the disclaimer.
+
+The following upstream project is embedded at src/rs_driver and is retained
+byte-for-byte, apart from its documentation link targets, which point at the
+pinned baseline because the upstream doc/ and img/ trees are not distributed
+here:
+
+  rs_driver
+  https://github.com/RoboSense-LiDAR/rs_driver
+  baseline commit 897b14d3bdb6186a75df27ba51b65b5bd5557723
+
+Copyright holder of both upstream projects: RoboSense. RoboSense is not
+affiliated with LimX Dynamics.
+
+------------------------------------------------------------------------------
+2. The local modifications - separate work built on layer 1
+------------------------------------------------------------------------------
+
+Copyright 2026 LimX Dynamics Technology Co., Ltd.
+
+The modifications in this directory are original work of LimX Dynamics. They
+were made in 2026 for the ROS 2 Humble / aarch64 navigation integration and are
+not the work of RoboSense. RoboSense has not reviewed, endorsed, or approved
+them, and the upstream copyright notice does not extend to them.
+
+The changes include RSFAIRY configuration, point-cloud filtering, IMU
+packet/publication handling, ROS 2 build and package updates, an exact
+BSD-3-Clause package-manifest identifier, and thread and shutdown safety
+corrections.
+
+New files added by LimX Dynamics:
+
+  NOTICE
+  src/source/rslidar_point_filter.hpp
+  test/rslidar_point_filter_test.cpp
+
+Existing baseline files modified by LimX Dynamics:
+
+  .gitignore
+  CMakeLists.txt
+  README.md
+  README_CN.md
+  config/config.yaml
+  node/rslidar_sdk_node.cpp
+  package.xml
+  src/source/source_driver.hpp
+  src/source/source_packet_ros.hpp
+  src/source/source_pointcloud_ros.hpp
+
+Every other file in this directory is retained byte-for-byte from the baseline
+commits recorded above.
+
+Preserve the upstream copyright notice, license conditions, and disclaimer, and
+this modification notice when redistributing the modified source or binaries.

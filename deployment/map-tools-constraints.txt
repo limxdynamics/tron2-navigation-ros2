@@ -1,0 +1,4 @@
+numpy<1.24
+cupy-cuda12x==13.6.0
+rosbags==0.9.23
+pypcd4==1.4.3

@@ -1,0 +1,8 @@
+upstream_repository=https://github.com/wuyi2121/SCAN-Planner.git
+upstream_branch=ros2-community
+upstream_commit=d0b921c9b05a6d291d144d60882b2e0e88d2c0e0
+upstream_commit_date=2026-07-13T07:45:30Z
+upstream_commit_message=Update simulation configuration and map asset
+local_import_archive=SCAN-Planner-ros2-community.zip
+local_import_archive_sha256=bf6405db6767ccbed707d4a90ef8ba940174fbf23deff116df145317a94c75b9
+verification=The local ZIP Git-archive comment is the commit SHA above; the GitHub commits API independently confirms the same SHA, date, message, repository, and that this commit is the tip of the upstream ros2-community branch. The upstream default branch main carries the original ROS 1 tree and shares no common ancestor with ros2-community, so the branch name is required to locate this baseline.

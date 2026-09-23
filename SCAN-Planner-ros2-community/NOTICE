@@ -1,0 +1,129 @@
+NOTICE - SCAN-Planner ROS 2 production subset
+==============================================================================
+
+This directory combines two separately owned bodies of work. They are recorded
+under separate headings below so that neither of them is attributed to the
+other.
+
+------------------------------------------------------------------------------
+1. The ROS 2 port layer - an external community contribution
+------------------------------------------------------------------------------
+
+SCAN-Planner ROS 2
+Copyright 2026 xiaoqi371317
+
+The ROS 2 port in this directory is a community contribution. It was written in
+full by an individual contributor, xiaoqi371317, and published as the
+`ros2-community` branch of the upstream project named below. That contributor is
+not an author of the original SCAN-Planner research and is not affiliated with
+LimX Dynamics.
+
+This directory is a production subset of:
+
+  SCAN-Planner
+  https://github.com/wuyi2121/SCAN-Planner
+  branch ros2-community, baseline commit d0b921c9b05a6d291d144d60882b2e0e88d2c0e0
+
+The upstream default branch `main` carries the original ROS 1 tree and shares no
+common ancestor with `ros2-community`, so the branch name is required to locate
+this baseline. The baseline is recorded by the local import ZIP's Git-archive
+comment and was independently verified against the upstream GitHub commits API.
+See UPSTREAM_COMMIT for the evidence record.
+
+The ROS 2 port layer covers the ROS 2 Humble / Ubuntu 22.04 package layout, the
+ament_cmake and colcon build integration, the rclcpp node and message
+adaptation, tf2_ros frame handling, the RViz2 configuration, and the ROS 2
+launch files. The contributor's own README states that the core algorithm and
+the project design remain the work of the original research authors and that the
+ROS 2 adaptation is the contributor's own; this directory retains that statement
+together with the contributor's copyright notice above.
+
+Original research authors:
+  Han Zheng, Zhe Chen, Yiwen Fu, Ming Yang, and Tong Qin
+
+Original project:
+  SCAN-Planner: Spatial Collision-Aware Local Planning for
+  Route-Guided Long-Range Quadruped Navigation
+  https://arxiv.org/abs/2606.19555
+
+The upstream project is licensed under the Apache License, Version 2.0. This
+derivative preserves that license and adds ROS 2 Humble, Ubuntu 22.04,
+ament_cmake, colcon, rclcpp, RViz2, tf2_ros and ROS 2 launch integration.
+
+The upstream authors and maintainers are not affiliated with, and do not
+necessarily endorse, this port. The same applies to the community contributor
+with respect to the production integration described below; the contributor's
+notice above does not extend to it.
+
+------------------------------------------------------------------------------
+2. The LimX Dynamics production integration - separate work built on layer 1
+------------------------------------------------------------------------------
+
+Copyright 2026 LimX Dynamics Technology Co., Ltd.
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The production integration in this directory is original work of LimX Dynamics.
+It builds on the ROS 2 port layer described above, is not part of the community
+contributor's contribution, and is not covered by the contributor's copyright
+notice. It consists of the following files.
+
+New files added by LimX Dynamics:
+
+  UPSTREAM_COMMIT
+  src/planner/plan_manage/config/nx_pct_controllers.yaml
+  src/planner/plan_manage/config/nx_pct_navigation.rviz
+  src/planner/plan_manage/config/nx_pct_planner.yaml
+  src/planner/plan_manage/launch/nx_pct_navigation.launch.py
+  src/planner/plan_manage/launch/nx_pct_rviz.launch.py
+  src/planner/plan_manage/scripts/limx_websocket_cmd_bridge.py
+  src/planner/plan_manage/src/closed_loop_controller_safe.cpp
+  src/planner/plan_manage/src/pose_stamped_to_odometry.cpp
+  src/planner/plan_manage/test/test_chassis_configuration.py
+  src/planner/plan_manage/test/test_limx_websocket_cmd_bridge.py
+
+Existing baseline files modified by LimX Dynamics:
+
+  NOTICE
+  README.md
+  src/planner/bspline_opt/src/bspline_optimizer.cpp
+  src/planner/plan_manage/CMakeLists.txt
+  src/planner/plan_manage/include/plan_manage/planner_manager.h
+  src/planner/plan_manage/include/plan_manage/scan_replan_fsm.h
+  src/planner/plan_manage/package.xml
+  src/planner/plan_manage/src/planner_manager.cpp
+  src/planner/plan_manage/src/scan_replan_fsm.cpp
+  src/planner/plan_env/include/plan_env/grid_map.h
+  src/planner/plan_env/src/grid_map.cpp
+  src/planner/traj_utils/include/traj_utils/planning_visualization.h
+  src/planner/traj_utils/include/traj_utils/polynomial_traj.h
+  src/planner/traj_utils/src/planning_visualization.cpp
+
+In accordance with Section 4(b) of the Apache License, Version 2.0, notice is
+given that LimX Dynamics has changed each file listed as modified above. Every
+other file in this directory is retained byte-for-byte from the baseline commit
+and remains the community contributor's work under the Apache License,
+Version 2.0.
+
+The production integration adds a fail-closed ROS 2 velocity gateway for the
+external LimX signaling service. The signaling server, robot firmware,
+credentials/authorization, and a valid hardware identity are not included. The
+gateway is not a standalone chassis implementation and must be configured for an
+authorized compatible robot before use.
+
+The v1.1.0 integration also adds an explicit local obstacle-cloud subscription
+switch for supervised maintenance and stair testing. The normal default stays
+enabled. Disabling it is guarded by paused startup, bounded speed, and a
+separate operator confirmation in the LimX integration scripts.
+
+------------------------------------------------------------------------------
+3. Optional simulator/demo packages - excluded from this subset
+------------------------------------------------------------------------------
+
+Optional simulation/demo packages under src/simulator have independent package
+license declarations: mockamap and local_sensing_node declare GPL-3.0-only;
+pose_utils, go2_description, waypoint_generator, and odom_visualization declare
+BSD-3-Clause. They are referenced by the upstream demo launch files, but are not
+used by the production nx_pct_navigation.launch.py path, and they are not
+distributed in this directory. Their exact original sources, copyright notices,
+and standalone license texts must be verified before any release that includes
+them.

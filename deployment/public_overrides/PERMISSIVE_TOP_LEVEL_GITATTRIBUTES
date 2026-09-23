@@ -1,0 +1,32 @@
+# Line endings are part of SOURCE_INVENTORY.sha256 and of the pinned upstream
+# provenance hashes, so no rule here may rewrite a committed file implicitly.
+#
+# Only files that LimX authors or generates are pinned to LF. That stops a
+# Windows checkout with core.autocrlf enabled from silently reintroducing CRLF
+# and invalidating the exported source inventory.
+#
+# The vendored third-party trees (SCAN-Planner-ros2-community, RSLIDAR_SDK_ROS2,
+# RSLIDAR_MSG_ROS2) are deliberately left unset: they ship a mix of LF and CRLF
+# files that must stay byte-exact. deployment/audit_permissive_source.sh
+# re-verifies every one of them against SOURCE_INVENTORY.sha256.
+
+*.sh                    text eol=lf
+*.bash                  text eol=lf
+*.py                    text eol=lf
+*.md                    text eol=lf
+*.txt                   text eol=lf
+*.yaml                  text eol=lf
+*.yml                   text eol=lf
+*.json                  text eol=lf
+*.example               text eol=lf
+.gitignore              text eol=lf
+.gitattributes          text eol=lf
+SOURCE_INVENTORY.sha256 text eol=lf
+
+# Preserve vendored and mirrored third-party files byte-for-byte. These later
+# rules override the extension rules above for every file below these roots.
+/SCAN-Planner-ros2-community/** -text -eol whitespace=trailing-space,space-before-tab,cr-at-eol
+/RSLIDAR_SDK_ROS2/**            -text -eol whitespace=trailing-space,space-before-tab,cr-at-eol
+/RSLIDAR_MSG_ROS2/**            -text -eol whitespace=trailing-space,space-before-tab,cr-at-eol
+/deployment/public_overrides/plaintext/SCAN-Planner-ros2-community/** -text -eol whitespace=trailing-space,space-before-tab,cr-at-eol
+/deployment/public_overrides/plaintext/RSLIDAR_SDK_ROS2/**            -text -eol whitespace=trailing-space,space-before-tab,cr-at-eol
