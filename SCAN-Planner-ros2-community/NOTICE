@@ -26,9 +26,10 @@ This directory is a production subset of:
 
 The upstream default branch `main` carries the original ROS 1 tree and shares no
 common ancestor with `ros2-community`, so the branch name is required to locate
-this baseline. The baseline is recorded by the local import ZIP's Git-archive
-comment and was independently verified against the upstream GitHub commits API.
-See UPSTREAM_COMMIT for the evidence record.
+this baseline. The baseline commit, its date and its message were independently
+verified against the upstream GitHub commits API, which also confirms that the
+commit is the tip of `ros2-community`. See UPSTREAM_COMMIT for the recorded
+coordinates.
 
 The ROS 2 port layer covers the ROS 2 Humble / Ubuntu 22.04 package layout, the
 ament_cmake and colcon build integration, the rclcpp node and message
