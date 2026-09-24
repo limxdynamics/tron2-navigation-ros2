@@ -2,6 +2,14 @@
 
 [English](README.md) | [中文](README_zh-CN.md)
 
+<p align="center">
+  <img src="docs/images/tron2-navigation-ros2.png" alt="tron2-navigation-ros2: wheeled-legged TRON2 robot autonomously climbing outdoor stairs with SCAN-Planner and RoboSense LiDAR" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/images/tron2-stairs-demo.gif" alt="TRON2 wheeled-legged robot climbing outdoor stairs (demo)" width="360">
+</p>
+
 This repository publishes the permissively licensed parts of the navigation
 integration:
 

@@ -2,6 +2,14 @@
 
 [English](README.md) | [中文](README_zh-CN.md)
 
+<p align="center">
+  <img src="docs/images/tron2-navigation-ros2.png" alt="tron2-navigation-ros2：轮腿式 TRON2 机器人基于 SCAN-Planner 与 RoboSense LiDAR 自主攀爬室外楼梯" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/images/tron2-stairs-demo.gif" alt="TRON2 轮腿式机器人攀爬室外楼梯（演示）" width="360">
+</p>
+
 本仓库公开导航集成中采用宽松许可证（permissive license）的部分：
 
 - LimX 自有的 ROS 2 集成、部署、安全与测试代码，适用顶层 Apache-2.0 许可；
