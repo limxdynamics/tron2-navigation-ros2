@@ -1,47 +1,110 @@
-# LimX ROS 2 导航集成
+<p align="center">
+  <img src="docs/images/tron2-navigation-banner-zh.png" alt="TRON2 Navigation：面向 LimX TRON2 轮腿机器人的 ROS 2 Humble 导航集成，涵盖激光雷达建图、可上下楼梯的全局规划与故障即停的底盘网关" width="100%">
+</p>
 
-[English](README.md) | [中文](README_zh-CN.md)
+<p align="center">
+  <a href="README.md">English</a> | <a href="README_zh-CN.md">中文</a>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-3b82f6" alt="License: Apache-2.0"></a>
+  <a href="https://docs.ros.org/en/humble/"><img src="https://img.shields.io/badge/ROS%202-Humble-22314e" alt="ROS 2 Humble"></a>
+  <img src="https://img.shields.io/badge/Ubuntu-22.04%20aarch64-e95420" alt="Ubuntu 22.04 aarch64">
+  <img src="https://img.shields.io/badge/Python-3-3776ab" alt="Python 3">
+  <a href="https://github.com/limxdynamics/tron2-navigation-ros2/tags"><img src="https://img.shields.io/badge/version-v1.1.0-64748b" alt="Version v1.1.0"></a>
+</p>
+
+# TRON2 Navigation：ROS 2 导航集成
+
+面向 LimX TRON2 轮腿机器人的 ROS 2 Humble 自主导航：RoboSense 激光雷达输入，
+FAST-LIO 定位，PCT 跨楼层与楼梯的全局规划，SCAN 局部规划，再经故障即停的
+WebSocket 网关下发到底盘。
+
+> 本仓库只包含整条链路中采用宽松许可证的部分。FAST-LIO 与 PCT 位于两个伴生 GPL 仓库，
+> 一条命令即可获取并校验；详见[许可证边界](#许可证边界)。
+
+## 亮点
+
+- **跨楼层、上下楼梯的规划。** PCT 用近场地图构建多层体素图并跨层规划；SCAN 沿路径行驶，
+  常规导航下局部避障始终开启。
+- **一次建图，两份互相校验的地图。** 全量定位 PCD 与近场 PCT 源 PCD 一起保存，并由 SHA-256
+  清单绑定，混搭或被改动过的地图对会在激活时被拒绝。
+- **故障即停的底盘网关。** 导航以暂停状态启动，速度与偏航强制限幅；指令中断 0.3 s 或连接断开
+  会锁定暂停并持续发送零速度。
+- **五条命令，从空场地到行驶。** `./navi.sh map`、`save`、`pct`、`nav`、`go`，
+  `pause`、`cancel`、`stop` 随时可用。
+- **可复现、许可证清晰的源码。** 面向 Ubuntu 22.04 aarch64 的一键安装器，GPL 伴生仓库固定在
+  经校验的 `v1.1.0` 提交，并附带 SHA-256 源码清单与审计脚本。
+- **没有机器人也能测试。** 47 个单元测试只依赖 `pytest`，使用本地 WebSocket 桩与 RFC 5737
+  文档地址。
+
+## 真机效果
+
+<p align="center">
+  <img src="docs/images/tron2-stairs-demo.gif" alt="TRON2 轮腿式机器人攀爬室外楼梯（演示）" width="320">
+</p>
 
 <p align="center">
   <img src="docs/images/tron2-navigation-ros2.png" alt="tron2-navigation-ros2：轮腿式 TRON2 机器人基于 SCAN-Planner 与 RoboSense LiDAR 自主攀爬室外楼梯" width="100%">
 </p>
 
+## 链路组成
+
+| 组件 | 作用 | 许可证 | 位置 |
+|---|---|---|---|
+| RoboSense `rslidar_sdk`、`rs_driver`、`rslidar_msg` | 激光雷达驱动，发布 `/rslidar_points` 与 `/rslidar_imu_data` | BSD-3-Clause | [`RSLIDAR_SDK_ROS2/`](RSLIDAR_SDK_ROS2)、[`RSLIDAR_MSG_ROS2/`](RSLIDAR_MSG_ROS2) |
+| SCAN-Planner 生产子集 | 局部规划、避障与路径跟踪，发布 `/sdk_cmd_vel` | Apache-2.0 | [`SCAN-Planner-ros2-community/`](SCAN-Planner-ros2-community) |
+| LimX WebSocket 网关 | 通往底盘的唯一速度通路，以暂停状态启动，故障即停 | Apache-2.0 | [`limx_websocket_cmd_bridge.py`](SCAN-Planner-ros2-community/src/planner/plan_manage/scripts/limx_websocket_cmd_bridge.py) |
+| 部署与安全工具 | `install.sh`、`navi.sh`、地图工具、源码审计 | Apache-2.0 | 仓库根目录、[`deployment/`](deployment) |
+| FAST-LIO 建图与定位 | 生成地图对，发布 `/pose_stamped` | GPL-2.0-only | [tron2-navigation-fastlio-gpl](https://github.com/limxdynamics/tron2-navigation-fastlio-gpl) |
+| PCT 全局规划器 | 跨楼层与楼梯规划，发布 `/pct_path` | GPLv2-or-later | [tron2-navigation-pct-gpl](https://github.com/limxdynamics/tron2-navigation-pct-gpl) |
+
+## 架构
+
 <p align="center">
-  <img src="docs/images/tron2-stairs-demo.gif" alt="TRON2 轮腿式机器人攀爬室外楼梯（演示）" width="360">
+  <img src="docs/images/tron2-navigation-architecture-zh.png" alt="架构图：RoboSense 驱动、FAST-LIO 定位、PCT 全局规划、SCAN 局部规划、LimX WebSocket 网关到 TRON2 底盘，每条连线标注 ROS 2 topic，虚线框为伴生 GPL 仓库" width="100%">
 </p>
 
-本仓库公开导航集成中采用宽松许可证（permissive license）的部分：
+### 外部运行时集成
 
-- LimX 自有的 ROS 2 集成、部署、安全与测试代码，适用顶层 Apache-2.0 许可；
-- 生产用 ROS 2 SCAN-Planner 子集，适用 Apache-2.0 —— 其 ROS 2 移植层是外部社区贡献，
-  LimX Dynamics 的生产集成建立在该层之上；
-- RoboSense `rslidar_sdk`、内嵌的 `rs_driver` 与 `rslidar_msg`，适用 BSD-3-Clause。
+在兼容的外部 GPL 仓库已检出到预期的同级目录、并构建进各自独立的 install 前缀之后，
+仓库内既有的集成脚本可通过 ROS 2 topic 对它们进行编排。关键接口如下：
 
-`FAST_LIO`、`FAST_LIO_LOCALIZATION2`、PCT_planner 及其内嵌代码与 Git 历史**刻意未包含**在本
-仓库内，它们属于外部 GPL 依赖。相关说明见
-[外部 GPL 依赖](docs/GPL_EXTERNAL_DEPENDENCIES.md)、[许可范围](LICENSING.md)、
-[第三方声明](THIRD_PARTY_NOTICES.md)与[硬件兼容性](docs/HARDWARE_COMPATIBILITY.md)。
+| 生产者 | 消费者 | 接口 |
+|---|---|---|
+| RoboSense | FAST-LIO | `/rslidar_points`（`sensor_msgs/PointCloud2`）与 `/rslidar_imu_data`（`sensor_msgs/Imu`） |
+| 定位 | PCT | `/pose_stamped`（`geometry_msgs/PoseStamped`） |
+| 定位 | SCAN | `/pose_stamped` 与 `/corrected_current_pcd` |
+| PCT | SCAN | `/pct_path`（`nav_msgs/Path`） |
+| SCAN 控制器 | LimX 网关 | `/sdk_cmd_vel`（`geometry_msgs/Twist`） |
 
-## 仓库范围
+地图、坐标系、QoS、时间戳与版本兼容性须由部署方自行校验。
+PCD/PCT 地图属于运行时数据，本仓库刻意不提供。
 
-顶层 Apache-2.0 许可**仅**覆盖版权归 LimX Dynamics Technology Co., Ltd. 所有的自研集成文件。
-每个第三方组件保留自己的 LICENSE 与 NOTICE。本仓库不分发任何 GPL 源码、GPL 头文件、
-GPL Python 扩展、GPL 二进制、地图、录包、构建产物、部署快照、站点凭据、内网地址或机器人标识。
+## 30 秒快速开始
 
-被排除的 GPL 程序在部署系统中是相互独立的 ROS 2 进程。跨组件集成通过 ROS 2/DDS 消息与
-有据可查的文件完成，并未把 GPL 库链接进本仓库所含的 SCAN 或 RoboSense 二进制。
-这一工程上的分离本身并不构成对「聚合作品 / 衍生作品」的法律判定。
+这一步不需要 ROS 2、机器人或 GPU。在任意装有 Git 与 Python 3 的 Linux 机器上即可运行仓库自带的单元测试：
 
-### SCAN-Planner 归属
+```bash
+git clone https://github.com/limxdynamics/tron2-navigation-ros2.git
+cd tron2-navigation-ros2
+pip install pytest
+python3 -m pytest tests \
+  SCAN-Planner-ros2-community/src/planner/plan_manage/test/test_limx_websocket_cmd_bridge.py \
+  SCAN-Planner-ros2-community/src/planner/plan_manage/test/test_chassis_configuration.py
+./navi.sh help
+```
 
-`SCAN-Planner-ros2-community/` 由两部分归属不同的贡献组成。其 ROS 2 移植层 ——
-ROS 2 Humble、ament_cmake、colcon、rclcpp、tf2_ros、RViz2 以及 launch 集成 ——
-由外部个人贡献者 `xiaoqi371317` 独立完成，并作为上游
-<https://github.com/wuyi2121/SCAN-Planner> 的 `ros2-community` 分支发布。
-该贡献者不是 SCAN-Planner 的原始研究作者，与 LimX Dynamics 亦无隶属关系。
-建立在该层之上的生产集成属于 LimX Dynamics 自有工作，适用顶层 Apache-2.0 许可。
-文件级归属划分与 Apache-2.0 第 4(b) 条修改声明见
-[SCAN-Planner-ros2-community/NOTICE](SCAN-Planner-ros2-community/NOTICE)。
+预期结果为 `47 passed, 1 skipped`；被跳过的那个测试会在链接 FAST-LIO 伴生仓库后运行。想看看机器人本身，
+可以用 MuJoCo 查看器打开 [tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description)
+中的 TRON2 轮式模型：
+
+```bash
+pip install mujoco
+git clone https://github.com/limxdynamics/tron2-robot-description.git
+cd tron2-robot-description
+python3 -m mujoco.viewer --mjcf=tron2a/WF_*/xml/robot.xml  # TRON2A 轮式模型
+```
 
 ## 不含 GPL 依赖时可构建的内容
 
@@ -178,34 +241,12 @@ LimX 既有 WebSocket 网关是唯一受支持的速度通路；旧的 MROS 指�
 ./navi.sh go
 ```
 
+<p align="center">
+  <img src="docs/images/tron2-navigation-workflow-zh.png" alt="navi.sh 流程：map、save（定位 PCD、PCT 源 PCD 与地图对清单）、pct、nav（以暂停状态启动）、go（输入 GO）；pause、cancel、stop 随时可用" width="100%">
+</p>
+
 用 `./navi.sh pause`、`./navi.sh cancel`、`./navi.sh stop` 分别暂停运动、取消目标、停止整条
 导航栈。在站点配置、匹配地图对、定位、唯一指令通路以及物理安全项全部通过之前，请勿运行 `go`。
-
-## 安全约定
-
-- 启动即为暂停状态；
-- 端点/标识缺失或格式错误时按失败安全处理（fail closed）；
-- 强制速度与偏航限幅；
-- 通信超时或断连会锁定暂停，并持续发送零速度；
-- 拒绝旧的指令桥与重复网关；
-- 恢复运行需要真实终端，并输入大写的 `GO`；
-- 安装与测试绝不启动导航，也不发送非零速度。
-
-## 外部运行时集成
-
-在兼容的外部 GPL 仓库已检出到预期的同级目录、并构建进各自独立的 install 前缀之后，
-仓库内既有的集成脚本可通过 ROS 2 topic 对它们进行编排。关键接口如下：
-
-| 生产者 | 消费者 | 接口 |
-|---|---|---|
-| RoboSense | FAST-LIO | `/rslidar_points`（`sensor_msgs/PointCloud2`）与 `/rslidar_imu_data`（`sensor_msgs/Imu`） |
-| 定位 | PCT | `/pose_stamped`（`geometry_msgs/PoseStamped`） |
-| 定位 | SCAN | `/pose_stamped` 与 `/corrected_current_pcd` |
-| PCT | SCAN | `/pct_path`（`nav_msgs/Path`） |
-| SCAN 控制器 | LimX 网关 | `/sdk_cmd_vel`（`geometry_msgs/Twist`） |
-
-地图、坐标系、QoS、时间戳与版本兼容性须由部署方自行校验。
-PCD/PCT 地图属于运行时数据，本仓库刻意不提供。
 
 ## 源码完整性
 
@@ -229,3 +270,52 @@ SPDX 标识符：`Apache-2.0`。
 `LICENSE` / `NOTICE` 文件中。顶层许可的覆盖范围见 [`LICENSING.md`](LICENSING.md)；
 单独授权的伴生仓库列于
 [`docs/GPL_EXTERNAL_DEPENDENCIES.md`](docs/GPL_EXTERNAL_DEPENDENCIES.md)。
+
+## 许可证边界
+
+本仓库公开导航集成中采用宽松许可证（permissive license）的部分：
+
+- LimX 自有的 ROS 2 集成、部署、安全与测试代码，适用顶层 Apache-2.0 许可；
+- 生产用 ROS 2 SCAN-Planner 子集，适用 Apache-2.0 —— 其 ROS 2 移植层是外部社区贡献，
+  LimX Dynamics 的生产集成建立在该层之上；
+- RoboSense `rslidar_sdk`、内嵌的 `rs_driver` 与 `rslidar_msg`，适用 BSD-3-Clause。
+
+`FAST_LIO`、`FAST_LIO_LOCALIZATION2`、PCT_planner 及其内嵌代码与 Git 历史**刻意未包含**在本
+仓库内，它们属于外部 GPL 依赖。相关说明见
+[外部 GPL 依赖](docs/GPL_EXTERNAL_DEPENDENCIES.md)、[许可范围](LICENSING.md)、
+[第三方声明](THIRD_PARTY_NOTICES.md)与[硬件兼容性](docs/HARDWARE_COMPATIBILITY.md)。
+
+## 仓库范围
+
+顶层 Apache-2.0 许可**仅**覆盖版权归 LimX Dynamics Technology Co., Ltd. 所有的自研集成文件。
+每个第三方组件保留自己的 LICENSE 与 NOTICE。本仓库不分发任何 GPL 源码、GPL 头文件、
+GPL Python 扩展、GPL 二进制、地图、录包、构建产物、部署快照、站点凭据、内网地址或机器人标识。
+
+被排除的 GPL 程序在部署系统中是相互独立的 ROS 2 进程。跨组件集成通过 ROS 2/DDS 消息与
+有据可查的文件完成，并未把 GPL 库链接进本仓库所含的 SCAN 或 RoboSense 二进制。
+这一工程上的分离本身并不构成对「聚合作品 / 衍生作品」的法律判定。
+
+### SCAN-Planner 归属
+
+`SCAN-Planner-ros2-community/` 由两部分归属不同的贡献组成。其 ROS 2 移植层 ——
+ROS 2 Humble、ament_cmake、colcon、rclcpp、tf2_ros、RViz2 以及 launch 集成 ——
+由外部个人贡献者 `xiaoqi371317` 独立完成，并作为上游
+<https://github.com/wuyi2121/SCAN-Planner> 的 `ros2-community` 分支发布。
+该贡献者不是 SCAN-Planner 的原始研究作者，与 LimX Dynamics 亦无隶属关系。
+建立在该层之上的生产集成属于 LimX Dynamics 自有工作，适用顶层 Apache-2.0 许可。
+文件级归属划分与 Apache-2.0 第 4(b) 条修改声明见
+[SCAN-Planner-ros2-community/NOTICE](SCAN-Planner-ros2-community/NOTICE)。
+
+## 安全约定
+
+<p align="center">
+  <img src="docs/images/tron2-navigation-safety-zh.png" alt="网关状态机：启动进入 PAUSED 并持续发送零速度；navi.sh go 并输入 GO 进入 DRIVING；navi.sh pause、0.3 s 指令超时或 WebSocket 断连回到 PAUSED；navi.sh stop 停止导航栈" width="100%">
+</p>
+
+- 启动即为暂停状态；
+- 端点/标识缺失或格式错误时按失败安全处理（fail closed）；
+- 强制速度与偏航限幅；
+- 通信超时或断连会锁定暂停，并持续发送零速度；
+- 拒绝旧的指令桥与重复网关；
+- 恢复运行需要真实终端，并输入大写的 `GO`；
+- 安装与测试绝不启动导航，也不发送非零速度。
