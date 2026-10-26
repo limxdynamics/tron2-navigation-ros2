@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/tron2-navigation-banner-zh.png" alt="TRON2 Navigation：面向 LimX TRON2 轮腿机器人的 ROS 2 Humble 导航集成，涵盖激光雷达建图、可上下楼梯的全局规划与故障即停的底盘网关" width="100%">
+  <img src="docs/images/tron2-navigation-banner-zh.png" alt="TRON2 Navigation：TRON2 轮腿机器人置身于激光雷达点云中，一条规划路径沿楼梯通往目标点；流程为激光雷达建图、定位、楼梯规划、安全底盘控制" width="100%">
 </p>
 
 <p align="center">

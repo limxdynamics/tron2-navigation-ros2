@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/tron2-navigation-banner.png" alt="TRON2 Navigation for ROS 2 Humble: LiDAR mapping, stair-capable planning and a fail-closed chassis gateway for the LimX TRON2 wheeled-legged robot" width="100%">
+  <img src="docs/images/tron2-navigation-banner.png" alt="TRON2 Navigation: the TRON2 wheeled-legged robot inside its LiDAR point cloud, with a planned path climbing a staircase to a goal marker; pipeline LiDAR mapping, localization, stair planning, safe chassis control" width="100%">
 </p>
 
 <p align="center">
