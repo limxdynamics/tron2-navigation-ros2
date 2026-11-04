@@ -17,6 +17,8 @@
 
 # TRON2 Navigation：ROS 2 导航集成
 
+> **TRON2 开源生态的一部分。** 上手路线和其他 TRON2 仓库：[TRON2 快速上手](https://github.com/limxdynamics/limxdynamics/blob/main/doc/quickstart_cn.md#tron2)。
+
 面向 LimX TRON2 轮腿机器人的 ROS 2 Humble 自主导航：RoboSense 激光雷达输入，
 FAST-LIO 定位，PCT 跨楼层与楼梯的全局规划，SCAN 局部规划，再经故障即停的
 WebSocket 网关下发到底盘。

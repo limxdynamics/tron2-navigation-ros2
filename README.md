@@ -17,6 +17,8 @@
 
 # TRON2 Navigation for ROS 2
 
+> **Part of the TRON2 open-source ecosystem.** Where to start and the other TRON2 repositories: [TRON2 quick start](https://github.com/limxdynamics/limxdynamics/blob/main/doc/quickstart.md#tron2).
+
 Autonomous navigation for the LimX TRON2 wheeled-legged robot on ROS 2 Humble:
 RoboSense LiDAR in, FAST-LIO localization, PCT global planning over stairs,
 SCAN local planning, and a fail-closed WebSocket gateway to the chassis.
