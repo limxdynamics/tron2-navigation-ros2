@@ -15,6 +15,7 @@
   <a href="https://github.com/limxdynamics/tron2-navigation-ros2/tags"><img src="https://img.shields.io/badge/version-v1.1.0-64748b" alt="Version v1.1.0"></a>
   <a href="https://github.com/limxdynamics/limxdynamics/blob/main/doc/wechat_qr.png"><img src="https://img.shields.io/badge/WeChat-Developer%20Community-07C160?logo=wechat&logoColor=white" alt="WeChat Community"></a>
 </p>
+<p align="center"><sub>For partnership and procurement inquiries, contact <a href="mailto:opensource@limxdynamics.com">opensource@limxdynamics.com</a></sub></p>
 
 # TRON2 Navigation for ROS 2
 
