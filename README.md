@@ -6,11 +6,6 @@
   <a href="README.md">English</a> | <a href="README_zh-CN.md">中文</a>
 </p>
 
-<!-- limx-community:start -->
-<!-- Managed by limxdynamics/limxdynamics/.github/community/sync_community.py; QR code: doc/wechat_qr.png in that repo -->
-<p align="center"><a href="https://github.com/limxdynamics/limxdynamics/blob/main/doc/wechat_qr.png"><img src="https://img.shields.io/badge/Join%20Our%20WeChat%20Community-All%20Projects%20Welcome-07C160?style=for-the-badge&logo=wechat&logoColor=white" alt="WeChat Community"></a></p>
-<!-- limx-community:end -->
-
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-3b82f6" alt="License: Apache-2.0"></a>
   <a href="https://github.com/limxdynamics/tron2-navigation-ros2/actions/workflows/ci.yml"><img src="https://github.com/limxdynamics/tron2-navigation-ros2/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI"></a>
@@ -18,6 +13,7 @@
   <img src="https://img.shields.io/badge/Ubuntu-22.04%20aarch64-e95420" alt="Ubuntu 22.04 aarch64">
   <img src="https://img.shields.io/badge/Python-3-3776ab" alt="Python 3">
   <a href="https://github.com/limxdynamics/tron2-navigation-ros2/tags"><img src="https://img.shields.io/badge/version-v1.1.0-64748b" alt="Version v1.1.0"></a>
+  <a href="https://github.com/limxdynamics/limxdynamics/blob/main/doc/wechat_qr.png"><img src="https://img.shields.io/badge/WeChat-Developer%20Community-07C160?logo=wechat&logoColor=white" alt="WeChat Community"></a>
 </p>
 
 # TRON2 Navigation for ROS 2
